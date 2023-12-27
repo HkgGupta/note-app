@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/styles.css">
+    <title>User Notes</title>
+    <style>
+        #profile-image {
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        #new-note {
+            cursor: pointer;
+        }
+
+        #new-note:hover {
+            background-color: rgb(231, 228, 228);
+        }
+
+        #new-note-image {
+            filter: opacity(80%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="user-profile dropdown text-right">
+            <a style="display: inline-block;  padding: 0.375rem 0.75rem;" class="text-decoration-none dropdown-toggle"
+                href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                <img id="profile-image" src="../image/user.jpg" class="rounded-circle" width="40" height="40"
+                    tabindex="0">
+            </a>
+
+            <div class="profile-menu dropdown-menu dropdown-menu-lg-right">
+                <a id="edit-profile" class="edit-profile dropdown-item" href="./profile.html">Edit Profile</a>
+                <a id="logout" class="logout dropdown-item bg-danger text-white" href="">Logout</a>
+            </div>
+        </div>
+        <h2 class="text-center p-2 mb-3 bg-primary text-white rounded">User Notes</h2>
+        <button id="refresh-notes" class="btn btn-primary float-right">Refresh</button>
+
+
+        <div class="row mt-3" id="notesContainer">
+
+            <div class="col-lg-4 col-md-6 col-12 mb-4">
+                <div id="new-note" class="card h-100">
+                    <div class="card-body">
+                        <center>
+                            <img id="new-note-image" src="../image/add.png" width="100" alt="">
+                        </center>
+                        <center>
+                            <b>Add New Notes</b>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="../js/main.js"></script>
+
+    <script type="module">
+
+        import { fetchAndDisplayNotes } from '../js/main.js';
+        window.onload = function () {
+            fetchAndDisplayNotes();
+        };
+
+        document.getElementById('refresh-notes').addEventListener('click', () => {
+            location.reload();
+        });
+
+        document.getElementById('new-note').addEventListener('click', () => {
+            window.location.href = './new-note.html';
+        });
+
+
+        document.getElementById('logout').addEventListener('click', () => {
+            // Check if the 'user' item exists in localStorage
+            if (localStorage.getItem('user')) {
+                // If it exists, remove the 'user' item
+                localStorage.removeItem('user');
+                location.reload();
+            } else {
+                window.location.href = "../html/login.html";
+                console.log('Item does not exist in localStorage.');
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
