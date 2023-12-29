@@ -7,15 +7,15 @@ const apiUrl = 'https://notes-app-backend-xt2o.onrender.com/user';
 
 export const registerUser = async () => {
     const formData = new FormData(document.getElementById('registrationForm'));
+    const bootstrapModel = new bootstrap.Modal(document.getElementById('bootstrapModel'));
+    const modalBody = document.querySelector('#bootstrapModel .modal-body');
+    const modalFooterLink = document.querySelector('#bootstrapModel .modal-footer a');
+
     console.log(formData);
     try {
         const data = await register(formData);
-
-        const bootstrapModel = new bootstrap.Modal(document.getElementById('bootstrapModel'));
-        const modalBody = document.querySelector('#bootstrapModel .modal-body');
-        const modalFooterLink = document.querySelector('#bootstrapModel .modal-footer a');
-
         if (data.success_message) {
+            console.log("Registered");
             // Bootstrap Modal
             // Change modal body content
             modalBody.innerHTML = `<img src="../image/tick.png" width="100" alt="Success">` +
@@ -25,6 +25,7 @@ export const registerUser = async () => {
             modalFooterLink.textContent = 'Login';
             reg_modal.show();
         } else if (data.error_message == "User already exists") {
+            console.log("Already account");
             // Bootstrap Modal
             // Change modal body content
             modalBody.innerHTML = `<img src="../image/cross.png" width="100" alt="Success">` +
@@ -34,6 +35,7 @@ export const registerUser = async () => {
             modalFooterLink.textContent = 'Login';
             bootstrapModel.show();
         } else {
+            console.log("Failed");
             // Bootstrap Modal
             // Change modal body content
             modalBody.innerHTML = `<img src="../image/cross.png" width="100" alt="Success">` +
@@ -61,16 +63,17 @@ export const registerUser = async () => {
 export const loginUser = async () => {
 
     const formData = new FormData(document.getElementById('loginForm'));
+    const bootstrapModel = new bootstrap.Modal(document.getElementById('bootstrapModel'));
+    const modalBody = document.querySelector('#bootstrapModel .modal-body');
+    const modalFooterLink = document.querySelector('#bootstrapModel .modal-footer a');
+
     try {
-        const bootstrapModel = new bootstrap.Modal(document.getElementById('bootstrapModel'));
-        const modalBody = document.querySelector('#bootstrapModel .modal-body');
-        const modalFooterLink = document.querySelector('#bootstrapModel .modal-footer a');
         const data = await login(formData);
 
         if (data.success_message) {
 
             setToken(data.token);
-
+            console.log("Logged In");
             // window.location.href = 'notes.html';
 
             // Bootstrap Modal
@@ -82,6 +85,7 @@ export const loginUser = async () => {
             modalFooterLink.textContent = 'See Notes';
             bootstrapModel.show();
         } else {
+            console.log("Log In Fail");
             // Bootstrap Modal
             // Change modal body content
             modalBody.innerHTML = `<img src="../image/cross.png" width="100" alt="Failed">` +
@@ -136,14 +140,13 @@ export const fetchAndDisplayNotes = async () => {
 
 export const createNewNote = async () => {
     const formData = new FormData(document.getElementById('newNoteForm'));
-
+    const bootstrapModel = new bootstrap.Modal(document.getElementById('bootstrapModel'));
+    const modalBody = document.querySelector('#bootstrapModel .modal-body');
+    const modalFooterLink = document.querySelector('#bootstrapModel .modal-footer a');
     try {
         const token = getToken();
 
         const data = await createNote(formData, token);
-        const bootstrapModel = new bootstrap.Modal(document.getElementById('bootstrapModel'));
-        const modalBody = document.querySelector('#bootstrapModel .modal-body');
-        const modalFooterLink = document.querySelector('#bootstrapModel .modal-footer a');
 
         if (data.error_message) {
             // Bootstrap Modal
@@ -171,19 +174,27 @@ export const createNewNote = async () => {
 
     } catch (error) {
         console.error('Create Note Error:', error);
+        // Bootstrap Modal
+        // Change modal body content
+        modalBody.innerHTML = `<img src="../image/cross.png" width="100" height="100" alt="Error">` + `<h5 class="mt-3">Failed to add New Note</h5>`;
+        // Remove user
+        localStorage.removeItem('user');
+        // Change modal footer link
+        modalFooterLink.href = '../html/new-note.html';
+        modalFooterLink.textContent = 'Relogin';
+        bootstrapModel.show();
     }
 };
 
 export const fetchUserDetails = async () => {
 
+    const bootstrapModel = new bootstrap.Modal(document.getElementById('bootstrapModel'));
+    const modalBody = document.querySelector('#bootstrapModel .modal-body');
+    const modalFooterLink = document.querySelector('#bootstrapModel .modal-footer a');
     try {
 
         const token = getToken();
         const data = await fetchDetails(token);
-
-        const bootstrapModel = new bootstrap.Modal(document.getElementById('bootstrapModel'));
-        const modalBody = document.querySelector('#bootstrapModel .modal-body');
-        const modalFooterLink = document.querySelector('#bootstrapModel .modal-footer a');
 
         if (data.error_message) {
             // Bootstrap Modal
@@ -227,4 +238,3 @@ export const fetchUserDetails = async () => {
     }
 
 }
-
