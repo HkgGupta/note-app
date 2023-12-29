@@ -23,7 +23,7 @@ export const registerUser = async () => {
             // Change modal footer link
             modalFooterLink.href = '../html/login.html';
             modalFooterLink.textContent = 'Login';
-            reg_modal.show();
+            bootstrapModel.show();
         } else if (data.error_message == "User already exists") {
             console.log("Already account");
             // Bootstrap Modal
